@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Provider {
+  id          String  @id
+  displayName String
+  apiKeyRef   String?
+  models      Model[]
+}
+
+model Model {
+  id                String     @id
+  providerId        String
+  provider          Provider   @relation(fields: [providerId], references: [id])
+  displayName       String
+  brandId           String     @default("unknown")
+  brandDisplayName  String     @default("Unknown")
+  brandSortOrder    Int        @default(99)
+  supportsSeed      Boolean
+  supportsEditing   Boolean    @default(false)
+  pricePerImage     Decimal    @db.Decimal(10, 6)
+  enabled           Boolean    @default(true)
+  generations       Generation[]
+}
+
+model Session {
+  id             String       @id @default(cuid())
+  createdAt      DateTime     @default(now())
+  name           String?      // STORY-096 : nom de session (auto-rempli horodaté, éditable)
+  prompts        String[]
+  promptsByPhase Json?        // STORY-105 : map { wireframe:{a,b,c}, mood:{a,b,c}, uiux:{a,b,c} }
+  activePhase    String       @default("wireframe") // STORY-105 : phase active courante
+  ratio          String?
+  notes          String?
+  saved          Boolean      @default(false)
+  saveFolder     String?
+  brief          Json?        // STORY-092 : brief structuré + URLs + contexte extrait + 3 prompts générés
+  generations    Generation[]
+  helperConversations HelperConversation[] // STORY-108
+}
+
+model Generation {
+  id         String    @id @default(cuid())
+  sessionId  String
+  session    Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  promptIdx  Int
+  prompt     String
+  modelId    String
+  model      Model     @relation(fields: [modelId], references: [id])
+  seed       BigInt?
+  ratio      String?
+  status     String
+  errorCode  String?
+  errorMsg   String?
+  imagePath  String?
+  liked      Boolean   @default(false)  // STORY-097 : favori utilisateur, déclenche persistence disque
+  phase      String    @default("wireframe") // STORY-105 : phase de génération (wireframe|mood|uiux)
+  promptVariant String @default("A") // STORY-105 : variant actif au moment du lancement (A|B|C)
+  costUsd    Decimal   @db.Decimal(10, 6)
+  rawMeta    Json?
+  params     Json?     // STORY-126 / EPIC-18 : params figés (defaults ⊕ overrides global ⊕ overrides per-gen)
+  createdAt  DateTime  @default(now())
+
+  @@index([sessionId])
+  @@index([modelId])
+  @@index([createdAt])
+  @@index([phase])
+}
+
+model HelperConversation {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  phase     String   // wireframe | mood | uiux
+  messages  Json     // Array<{ role: 'user'|'assistant', content: string }>
+  updatedAt DateTime @updatedAt
+
+  @@unique([sessionId, phase])
+  @@index([sessionId])
+}
+
+model Setting {
+  key   String @id
+  value String
+}

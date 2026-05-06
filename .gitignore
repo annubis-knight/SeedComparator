@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+
+# Nuxt / build
+.nuxt
+.output
+dist
+dist-electron
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Env (secrets)
+.env
+.env.local
+.env.*.local
+
+# Prisma
+prisma/migrations/migration.lock
+
+# Tests
+.vitest-cache
+
+# Electron-vite snapshots de config (régénérés à chaque dev run)
+electron.vite.config.[0-9]*.mjs
+electron.vite.config.[0-9]*.cjs
+*.timestamp-*.mjs
+*.timestamp-*.cjs
+
+# Conversations brainstorming (archives privées, lecture seule)
+gemini-conversation-*.md
+
+# Fixtures providers (volumineuses, ~44 Mo).
+# Décommenter si tu veux versionner tes fixtures pour reproductibilité du mode `mock-real`.
+tests/fixtures/
+
+# IDE
+.vscode/
+.idea/

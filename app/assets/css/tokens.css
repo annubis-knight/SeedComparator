@@ -1,0 +1,51 @@
+:root {
+  /* Dark mode Slate doux (FR-050) — inspiration Linear / Notion dark.
+     Fond plus chaleureux, contrastes adoucis, accent violet plus mat. */
+  --color-bg: #0f1117;
+  --color-bg-elevated: #161924;
+  --color-glass: rgba(255, 255, 255, 0.035);
+  --color-glass-border: rgba(255, 255, 255, 0.06);
+
+  --color-accent: #8b7fff;
+  --color-accent-hover: #a59bff;
+  --color-accent-subtle: rgba(139, 127, 255, 0.14);
+
+  --color-text: #e8eaf2;
+  --color-text-muted: #9ba0b5;
+  --color-text-dim: #6a6f82;
+
+  --color-danger: #f87a8e;
+  --color-success: #6ee7a3;
+
+  --shadow-glass: 0 8px 22px rgba(0, 0, 0, 0.28);
+  --shadow-glass-hover: 0 12px 28px rgba(139, 127, 255, 0.14);
+
+  /* Espacement aéré (NFR-004 + FR-047) */
+  --space-card-padding: 1.75rem;
+  --space-grid-gap: 2.5rem;
+  --space-section-gap: 3.5rem;
+
+  /* Hauteur min placeholder image (FR-048) */
+  --gen-card-min-height: 200px;
+}
+
+.gen-card-padding { padding: var(--space-card-padding); }
+.section-stack > * + * { margin-top: var(--space-section-gap); }
+.gen-card-min-h { min-height: var(--gen-card-min-height); }
+
+html, body, #__nuxt {
+  height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 15% 8%, rgba(139, 127, 255, 0.07), transparent 45%),
+    radial-gradient(circle at 92% 85%, rgba(110, 231, 163, 0.04), transparent 40%);
+}
+
+* {
+  box-sizing: border-box;
+}

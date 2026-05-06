@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Model" ADD COLUMN "brandId" TEXT NOT NULL DEFAULT 'unknown';
+ALTER TABLE "Model" ADD COLUMN "brandDisplayName" TEXT NOT NULL DEFAULT 'Unknown';
+ALTER TABLE "Model" ADD COLUMN "brandSortOrder" INTEGER NOT NULL DEFAULT 99;

@@ -1,0 +1,1 @@
+ALTER TABLE "Generation" ADD COLUMN "liked" BOOLEAN NOT NULL DEFAULT false;
